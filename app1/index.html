@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>311 Grafitti Request</title>
+<style>
+    #template {
+      
+     display: none;
+    }
+    
+    #Completed\ -\ Dup, #Completed
+    {
+      background-color:	#7FFF00;
+    }
+    
+    #Open\ -\ Dup, #Open
+    {
+      background-color:yellow;
+    }
+    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+  <h1>311 Grafitti Request</h1>
+</div>
+
+  <div id="results" class="container">
+  <div id="template" class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Panel Heading</h3>
+    </div>
+    <div class="panel-body">
+      Panel content
+    </div>
+  </div>
+</div>
+<script >
+  $.get("https://data.cityofchicago.org/resource/cdmx-wzbz.json", function(response)
+  {
+    console.log(response);
+    
+    $.each(response, function(i,v)
+    {
+      var template = $("#template").clone().removeAttr("id");
+      $(".panel-title", template).html(v.service_request_number);
+      $(".panel-heading", template).attr('id', v.status);
+      $(".panel-body", template).html(v.street_address + "<br>" + v.status);
+      $("#results").append(template);
+    });
+    
+  
+  });
+  
+   </script>
+</body>
+</html>
