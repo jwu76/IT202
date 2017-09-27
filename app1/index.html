@@ -50,7 +50,7 @@
       var template = $("#template").clone().removeAttr("id");
       $(".panel-title", template).html("<strong>" + v.service_request_number + "</strong>");
       $(".panel-heading", template).attr('id', v.status);
-      $(".panel-body", template).html("<p>" + v.street_address + "<br>" + v.status + "</p>");
+      $(".panel-body", template).html("<b>" + v.street_address + "</b>" + "<br>" + "<i>" + v.status + "</i>");
       $("#results").append(template);
     });
     
