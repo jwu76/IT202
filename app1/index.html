@@ -31,7 +31,7 @@
 </div>
 
   <div id="results" class="container">
-  <div id="template" class="panel panel-default">
+  <div id="template" class="panel panel-default hidden">
     <div class="panel-heading">
       <h3 class="panel-title">Panel Heading</h3>
     </div>
@@ -47,7 +47,7 @@
     
     $.each(response, function(i,v)
     {
-      var template = $("#template").clone().removeAttr("id");
+      var template = $("#template").clone().removeAttr("id").removeClass("hidden");
       $(".panel-title", template).html("<strong>" + v.service_request_number + "</strong>");
       $(".panel-heading", template).attr('id', v.status);
       $(".panel-body", template).html("<b>" + v.street_address + "</b>" + "<br>" + "<i>" + v.status + "</i>");
