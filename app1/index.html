@@ -40,6 +40,7 @@
     </div>
   </div>
 </div>
+
 <script >
   $.get("https://data.cityofchicago.org/resource/cdmx-wzbz.json", function(response)
   {
@@ -53,9 +54,8 @@
       $(".panel-body", template).html("<b>" + v.street_address + "</b>" + "<br>" + "<i>" + v.status + "</i>");
       $("#results").append(template);
     });
-    
-  
   });
+  
    </script>
 </body>
 </html>
