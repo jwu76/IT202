@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> </title>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+
+        <canvas id="myCanvas" width="800" height="650"  style="border:1px solid #000000;"></canvas>
+        <img id="ball" width="100" height="100" style="display:none;" src ="https://upload.wikimedia.org/wikipedia/commons/3/39/Ball_with_eyes.svg">
+    </body>
+    
+    <script>
+    
+    var canvas = document.getElementById("myCanvas");
+    var img = document.getElementById("ball");
+    
+    var ctx = canvas.getContext("2d");
+    var gameScore = 0;
+    var gameLives = 3;
+    var player = {image:img, realx: 450, realy:530, x:400, y:500, radius:30, shape:"image"};
+    var harm   = {x:400, y:25, radius:10,color: "red", shape: "circle"};
+    var benefit= {x:100, y:25,radius:10, color:"green", shape: "circle"};
+  
+    ctx.font = "25px Monospace" ;
+    
+    function draw()
+        {
+
+            ctx.clearRect(0,0, canvas.width, canvas.height);   
+            
+            drawCharacter(player);
+            drawCharacter(harm);    
+            drawCharacter(benefit);
+            
+            
+            ctx.fillText("Score:" + gameScore, 10, 30);
+            if(gameLives > 0)
+            {
+            ctx.fillText("Lives:" + gameLives, 10, 60);
+                
+            }
+            harm.y= harm.y + 2;
+            benefit.y= benefit.y + 2;
+            if(areCollding(player,harm)){
+                gameLives--;
+            };
+            
+             if(gameLives == 0)
+                {
+                    ctx.clearRect(0,0, canvas.width, canvas.height);  
+                    ctx.fillText("Score:" + gameScore, 10, 30);
+                    ctx.fillText("Lives:" + gameLives, 10, 60);
+                    ctx.font = "30px Comic Sans MS";
+                    ctx.fillStyle = "red";
+                    ctx.textAlign = "center";
+                    ctx.fillText("Game Over", canvas.width/2, canvas.height/2);
+                    cancelAnimationFrame(draw);
+                    return;
+                }
+            
+            if(areCollding(player,benefit)){
+                console.log("player has collided with benefit");
+                gameScore++;
+            }
+            
+            if(reachedEdge(harm, 'bottom')){
+                harm.y = 0;
+                harm.x = Math.floor(Math.random()*799);
+            }
+            
+             if(reachedEdge(benefit, 'bottom')){
+                benefit.y = 0;
+                benefit.x = Math.floor(Math.random() * 799);
+            }
+            
+            
+            requestAnimationFrame(draw);
+        }
+    function drawCharacter(character)
+        {
+            switch(character.shape)
+            {
+                case 'circle':
+                    drawCircle(character.x, character.y, character.radius, character.color);
+                    break;
+                
+                case 'image':
+                    ctx.drawImage(character.image, character.x, character.y);
+                    break;
+                    
+                default:
+                    console.log('character,shape case fell through');
+            }
+            
+        }
+    
+    function drawCircle(x,y, radius, color)
+    {
+         ctx.beginPath();
+            ctx.arc(x,y,radius,0,2*Math.PI);
+            ctx.fillStyle = color;
+            ctx.fill();
+            
+            requestAnimationFrame(drawCircle);
+    }
+
+    function areCollding(character1, character2)
+        {
+           var dx = character1.realx - character2.x;
+           var dy = character1.realy - character2.y;
+           var distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 30 + character2.radius) {
+
+        character2.x = Math.floor(Math.random()*799);
+        character2.y = 0;
+        return true;
+        }
+        return false;
+        }
+        
+    function reachedEdge(character, edge)
+    {
+        if(edge == 'bottom' && character.y > canvas.height)
+            return true;
+            
+        if(edge == 'left' && character.x < 5) 
+            return true;
+            
+        if(edge == 'right' && character.x > 700)    
+            return true;
+    }
+    
+    $(document).ready(function()
+        {
+           document.addEventListener('keydown', (event) => {
+            const keyName = event.key;
+            console.log(keyName);
+            if (keyName == 'ArrowLeft'  && !reachedEdge(player, 'left')) {
+                console.log(player.x)
+            // do not alert when only Control key is pressed.
+                player.x = player.x - 5;
+                player.realx = player.realx - 5;
+                
+            }
+  
+            if(keyName == 'ArrowRight' && !reachedEdge(player, 'right'))
+            {
+                console.log(player.x)
+            player.x = player.x + 5;
+            player.realx = player.realx + 5;
+            }
+             });  
+            requestAnimationFrame(draw);
+           
+        });
+    </script>
+</html>

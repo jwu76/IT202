@@ -170,12 +170,12 @@
             
                $.each(response, function(i,v) {
                 var template = $("#template").clone().removeAttr("id").removeClass("hidden");
-                $(".card-title", template).html("<strong>" + v.address + "</strong>" + "<br>");
-                $(".card-subtitle", template).html(v.aka_name +"<br>");
-                $(".card-text", template).html(v.facility_type + "<br>" + v.zip +"<br>" +v.results + "<br>" + v.risk);
+                $(".card-title", template).html("<strong>" + v.inspection_id + "</strong>" + "<br>");
+                $(".card-subtitle", template).html(v.dba_name +"<br>");
+                $(".card-text", template).html(v.aka_name + "<br>" + v.address +"<br>" +v.results + "<br>");
                 $("#text_results").append(template);
                 
-                var contentString = v.address + "<br>" + v.aka_name + "<br>" + v.facility_type + "<br>" + v.zip +"<br>" +v.results + "<br>" + v.risk
+                var contentString = v.inspection_id+ "<br>" + v.dba_name + "<br>" + v.aka_name + "<br>" + v.address +"<br>" +v.results + "<br>";
                 
                 var infowindow = new google.maps.InfoWindow({
                 content: contentString
