@@ -86,7 +86,7 @@
     </div>
   </div>
 
-  <div class="container screen" id="crime-data">Crime Results
+  <div class="container screen" id="crime-data">Blue Markers are Businesses. Red Markers are Crimes.
 
   </div>
 
@@ -157,14 +157,6 @@
               $(".card-subtitle", template).html(v.address + "<br>" + v.zip_code);
               $(".card-text", template).html("Police District:" + v.police_district + "<br>" + "Police Ward: " + v.ward + "<br>");
               $("#business-results").append(template);
-
-              // var marker = new google.maps.Marker({
-              //   position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
-              //   map: map,
-              //   icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-              // });
-
-
             });
           });
       });
@@ -202,8 +194,10 @@
                 icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
               });
               var contentString2 = "<h2>" + v.case_number
-                    + "</h2><br>" + v.block
-                    + "<br>" + v.ward;
+                    + "</h2><br>" + v.block 
+                    + "<br> Crime: " + v.primary_type
+                    + "<br> Time: " + v.date
+                    + "<br> Ward: " + v.ward;
               
               var infowindow2 = new google.maps.InfoWindow({
                 content: contentString2
@@ -225,8 +219,8 @@
                 icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
               });
                 var contentString = "<h2>" + v.legal_name
-                    + "</h2><br>" + v.address
-                    + "<br>" + v.ward;
+                    + "</h2><br> Address: " + v.address
+                    + "<br> Ward: " + v.ward;
               
               var infowindow = new google.maps.InfoWindow({
                 content: contentString
