@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> </title>
+  <style>
+    .screen {
+      height: 400px;
+      display: none;
+    }
+
+    #template {
+      display: none;
+    }
+  </style>
+  <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="https://v4-alpha.getbootstrap.com/examples/jumbotron/jumbotron.css" rel="stylesheet">
+  <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    <a class="navbar-brand" href="#">Navbar</a>
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#input_form">Input Form<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#business-results">Results FOR BUSINESSES</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#crime-data">RESULTS FOR CRIME</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <div class="jumbotron">
+    <div class="container screen" id="input_form">
+      <h1 class="display-3">Business Search By Ward</h1>
+      <form action="/action_page.php">
+        <div>
+          <label>Ward</label>
+          <input type="text" class="form-control" id="ward">
+        </div>
+
+        <div class="form-group">
+          <label></label>
+          <a id="busSearch" class="btn btn-primary btn-lg" href="#" role="button" disabled>Search</a>
+        </div>
+
+        <h1 class="display-3">Crime Search By Ward (2017 YEAR)</h1>
+        <form action="/action_page.php">
+          <div>
+            <label>Ward</label>
+            <input type="text" class="form-control" id="crimeward">
+          </div>
+
+          <div class="form-group">
+            <label></label>
+            <a id="crimeSearch" class="btn btn-primary btn-lg" href="#" role="button" disabled>Search</a>
+          </div>
+
+
+
+        </form>
+
+    </div>
+  </div>
+
+  <div class="container screen" id="business-results">Business Results
+
+    <div class="card hidden" id="template">
+      <div class="card-block">
+        <h4 class="card-title">Card title</h4>
+        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container screen" id="crime-data">Crime Results
+
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="https://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+  <script>
+    
+    function getLocation() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          initMap(position.coords.latitude, position.coords.longitude);
+        });
+      }
+      else {
+        alert('no geolocation');
+      }
+    }
+    var db = new Dexie('Business Data');
+    // Define a schema
+    db.version(1).stores({
+      business: 'name, address, zip, ward'
+    });
+
+
+    // Open the database
+    db.open().catch(function(error) {
+      alert('Uh oh : ' + error);
+    });
+
+    var db2 = new Dexie('Crime Data');
+    // Define a schema
+    db2.version(1).stores({
+      crime: 'address, zip, ward, type'
+    });
+
+
+    // Open the database
+    db2.open().catch(function(error) {
+      alert('Uh oh : ' + error);
+    });
+
+
+    $(document).ready(function() {
+      $("#busSearch").prop("disabled", false);
+      $("#busSearch").on("click", function() {
+
+        $.get("https://data.cityofchicago.org/resource/uupf-x98q.json?ward=" + +$("#ward").val(),
+          function(response) {
+            var length = response.length;
+
+            db.business.add({
+              name: response.legal_name,
+              address: response.address,
+              zip: response.zip_code,
+              ward: response.ward
+            });
+
+            $("#business-results").append("<br>There are " + length + " results." + "<br><br><br>");
+
+            $.each(response, function(i, v) {
+              var template = $("#template").clone().removeAttr("id").removeClass("hidden");
+              $(".card-title", template).html("<strong>" + v.legal_name + "</strong>" + "<br>");
+              $(".card-subtitle", template).html(v.address + "<br>" + v.zip_code);
+              $(".card-text", template).html("Police District:" + v.police_district + "<br>" + "Police Ward: " + v.ward + "<br>");
+              $("#business-results").append(template);
+
+              // var marker = new google.maps.Marker({
+              //   position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
+              //   map: map,
+              //   icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+              // });
+
+
+            });
+          });
+      });
+
+      $("#crimeSearch").prop("disabled", false);
+      $("#crimeSearch").on("click", getLocation);
+      $(".nav-link").on("click", function() {
+        $(".screen").hide();
+        var target = $(this).attr("href");
+        $(target).show();
+      });
+    });
+    
+    
+     function initMap(lat, lng) {
+        var uluru = { lat: lat, lng: lng };
+        var map = new google.maps.Map(document.getElementById('crime-data'), {
+          zoom: 13,
+          center: uluru
+        });
+        $.get("https://data.cityofchicago.org/resource/6zsd-86xi.json?year=2017&&ward=" + +$("#crimeward").val(),
+          function(response) {
+
+            db2.crime.add({
+              address: response.address,
+              zip: response.zip_code,
+              ward: response.ward,
+              type: response.primary_type
+            });
+
+            $.each(response, function(i, v) {
+              var marker = new google.maps.Marker({
+                position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
+                map: map,
+                icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+              });
+              var contentString2 = "<h2>" + v.case_number
+                    + "</h2><br>" + v.block
+                    + "<br>" + v.ward;
+              
+              var infowindow2 = new google.maps.InfoWindow({
+                content: contentString2
+              });
+              
+               marker.addListener('click', function() {
+                infowindow2.open(map, marker);
+              });
+              
+            });
+          });
+      
+       $.get("https://data.cityofchicago.org/resource/uupf-x98q.json?ward=" + +$("#ward").val(),
+          function(response2){
+             $.each(response2, function(i, v) {
+              var marker = new google.maps.Marker({
+                position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
+                map: map,
+                icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+              });
+                var contentString = "<h2>" + v.legal_name
+                    + "</h2><br>" + v.address
+                    + "<br>" + v.ward;
+              
+              var infowindow = new google.maps.InfoWindow({
+                content: contentString
+              });
+              
+               marker.addListener('click', function() {
+                infowindow.open(map, marker);
+              });
+              
+            });
+          });
+       
+       
+     }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5uMEVQFAwx-e3h1g6B1_glDKm78SIhhs&callback=getLocation">
+  </script>
+</body>
+
+</html>
