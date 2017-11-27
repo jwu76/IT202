@@ -9,7 +9,8 @@
       display: none;
     }
 
-    #template {
+    #template,
+    #template2 {
       display: none;
     }
   </style>
@@ -37,6 +38,9 @@
         <li class="nav-item">
           <a class="nav-link" href="#crime-data">RESULTS FOR CRIME</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#map">MAPPING RESULTS</a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -62,16 +66,11 @@
             <label>Ward</label>
             <input type="text" class="form-control" id="crimeward">
           </div>
-
           <div class="form-group">
             <label></label>
             <a id="crimeSearch" class="btn btn-primary btn-lg" href="#" role="button" disabled>Search</a>
           </div>
-
-
-
         </form>
-
     </div>
   </div>
 
@@ -86,7 +85,19 @@
     </div>
   </div>
 
-  <div class="container screen" id="crime-data">Blue Markers are Businesses. Red Markers are Crimes.
+  <div class="container screen" id="crime-data">Crime Data
+
+    <div class="card hidden" id="template2">
+      <div class="card-block">
+        <h4 class="card-title">Card title</h4>
+        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  <div class="container screen" id="map">Blue Markers are Businesses. Red Markers are Crimes.
 
   </div>
 
@@ -98,7 +109,6 @@
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="https://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
   <script>
-    
     function getLocation() {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -138,20 +148,20 @@
       $("#busSearch").prop("disabled", false);
       $("#busSearch").on("click", function() {
 
-        $.get("https://data.cityofchicago.org/resource/uupf-x98q.json?ward=" + +$("#ward").val(),
+        $.get("https://data.cityofchicago.org/resource/uupf-x98q.json?ward=" + $("#ward").val(),
           function(response) {
             var length = response.length;
 
-            db.business.add({
+            $("#business-results").append("<br>There are " + length + " results." + "<br><br><br>");
+
+            $.each(response, function(i, v) {
+             db.business.add({
               name: response.legal_name,
               address: response.address,
               zip: response.zip_code,
               ward: response.ward
             });
 
-            $("#business-results").append("<br>There are " + length + " results." + "<br><br><br>");
-
-            $.each(response, function(i, v) {
               var template = $("#template").clone().removeAttr("id").removeClass("hidden");
               $(".card-title", template).html("<strong>" + v.legal_name + "</strong>" + "<br>");
               $(".card-subtitle", template).html(v.address + "<br>" + v.zip_code);
@@ -169,72 +179,77 @@
         $(target).show();
       });
     });
-    
-    
-     function initMap(lat, lng) {
-        var uluru = { lat: lat, lng: lng };
-        var map = new google.maps.Map(document.getElementById('crime-data'), {
-          zoom: 13,
-          center: uluru
-        });
-        $.get("https://data.cityofchicago.org/resource/6zsd-86xi.json?year=2017&&ward=" + +$("#crimeward").val(),
-          function(response) {
 
+
+    function initMap(lat, lng) {
+      var uluru = { lat: lat, lng: lng };
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        center: uluru
+      });
+      $.get("https://data.cityofchicago.org/resource/6zsd-86xi.json?year=2017&&ward=" + $("#crimeward").val(),
+        function(response) {
+          var length2 = response.length;
+
+          $("#crime-data").append("<br>There are " + length2 +
+            " crime in this ward in the year 2017." + "<br><br><br>");
+
+          $.each(response, function(i, v) {
             db2.crime.add({
               address: response.address,
               zip: response.zip_code,
               ward: response.ward,
               type: response.primary_type
             });
+            var template2 = $("#template2").clone().removeAttr("id").removeClass("hidden");
+            $(".card-title", template2).html("<strong>" + v.case_number + "</strong>" + "<br>");
+            $(".card-subtitle", template2).html(v.block + "<br>" + v.primary_type);
+            $(".card-text", template2).html("Police District:" + v.district + "<br>" + "Police Ward: " + v.ward + "<br>");
+            $("#crime-data").append(template2);
 
-            $.each(response, function(i, v) {
-              var marker = new google.maps.Marker({
-                position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
-                map: map,
-                icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
-              });
-              var contentString2 = "<h2>" + v.case_number
-                    + "</h2><br>" + v.block 
-                    + "<br> Crime: " + v.primary_type
-                    + "<br> Time: " + v.date
-                    + "<br> Ward: " + v.ward;
-              
-              var infowindow2 = new google.maps.InfoWindow({
-                content: contentString2
-              });
-              
-               marker.addListener('click', function() {
-                infowindow2.open(map, marker);
-              });
-              
+            var marker = new google.maps.Marker({
+              position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
+              map: map,
+              icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+            });
+            var contentString2 = "<h2>" + v.case_number +
+              "</h2><br>" + v.block +
+              "<br> Crime: " + v.primary_type +
+              "<br> Time: " + v.date +
+              "<br> Ward: " + v.ward +
+              "<br> Arrested: " + v.arrest;
+
+            var infowindow2 = new google.maps.InfoWindow({
+              content: contentString2
+            });
+
+            marker.addListener('click', function() {
+              infowindow2.open(map, marker);
+            });
+
+          });
+        });
+
+      $.get("https://data.cityofchicago.org/resource/uupf-x98q.json?ward=" + +$("#ward").val(),
+        function(response2) {
+          $.each(response2, function(i, vari) {
+            var marker = new google.maps.Marker({
+              position: { lat: parseFloat(vari.latitude), lng: parseFloat(vari.longitude) },
+              map: map,
+              icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            });
+            var contentString = "<h2>" + vari.legal_name +
+              "</h2><br> Address: " + vari.address +
+              "<br> Ward: " + vari.ward;
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+            marker.addListener('click', function() {
+              infowindow.open(map, marker);
             });
           });
-      
-       $.get("https://data.cityofchicago.org/resource/uupf-x98q.json?ward=" + +$("#ward").val(),
-          function(response2){
-             $.each(response2, function(i, v) {
-              var marker = new google.maps.Marker({
-                position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
-                map: map,
-                icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-              });
-                var contentString = "<h2>" + v.legal_name
-                    + "</h2><br> Address: " + v.address
-                    + "<br> Ward: " + v.ward;
-              
-              var infowindow = new google.maps.InfoWindow({
-                content: contentString
-              });
-              
-               marker.addListener('click', function() {
-                infowindow.open(map, marker);
-              });
-              
-            });
-          });
-       
-       
-     }
+        });
+    }
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5uMEVQFAwx-e3h1g6B1_glDKm78SIhhs&callback=getLocation">
   </script>
