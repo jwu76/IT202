@@ -94,6 +94,7 @@
         <h4 class="mdc-card__title mdc-card__title--large">Card title</h4>
         <h6 class="mdc-card__subtitle mb-2 text-muted">Card subtitle</h6>
         <p class="mdc-card__supporting-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <button id="button">Add info to IndexedDB </button>
       </section>
     </div>
   </div>
@@ -105,6 +106,7 @@
         <h4 class="mdc-card__title mdc-card__title--large">Card title</h4>
         <h6 class="mdc-card__subtitle mb-2 text-muted">Card subtitle</h6>
         <p class="mdc-card__supporting-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <button id="button2">Add info to IndexedDB </button>
       </section>
     </div>
   </div>
@@ -132,11 +134,27 @@
     var db = new Dexie('Ward Data');
     // Define a schema
     db.version(1).stores({
-      ward: 'businessward, crimeward'
+      ward: 'businessward, crimeward',
+    });
+
+    var db2 = new Dexie('Business Data');
+    // Define a schema
+    db2.version(1).stores({
+      business: 'name, address',
     });
 
     // Open the database
-    db.open().catch(function(error) {
+    db2.open().catch(function(error) {
+      alert('Uh oh : ' + error);
+    });
+
+    var db3 = new Dexie('Crime Data');
+    // Define a schema
+    db3.version(1).stores({
+      crime: 'block, cward, type, date'
+    });
+
+    db3.open().catch(function(error) {
       alert('Uh oh : ' + error);
     });
 
@@ -147,16 +165,21 @@
         $.get("https://data.cityofchicago.org/resource/uupf-x98q.json?ward=" + $("#ward").val(),
           function(response) {
             var length = response.length;
-
             $("#business-results").append("<br><br><br><br>There are " + length + " results." + "<br><br><br>");
 
             $.each(response, function(i, v) {
-
               var template = $("#template").clone().attr("id", v.legal_name).removeClass("hidden");
               $(".mdc-card__title", template).html("<strong>" + v.legal_name + "</strong>" + "<br>");
               $(".mdc-card__subtitle", template).html(v.address + "<br>" + v.zip_code);
               $(".mdc-card__supporting-text", template).html("Police District:" + v.police_district + "<br>" + "Police Ward: " + v.ward + "<br>");
               $("#business-results").append(template);
+              $("#button", template).attr("id", v.legal_name);
+              $(template).on('click', function() {
+                db2.business.add({
+                  name: v.legal_name,
+                  addres: v.address
+                });
+              });
             });
           });
       });
@@ -199,6 +222,15 @@
             $(".mdc-card__subtitle", template2).html(v.block + "<br>" + v.primary_type);
             $(".mdc-card__supporting-text", template2).html("Police District: " + v.district + "<br>" + "Police Ward: " + v.ward + "<br>");
             $("#crime-data").append(template2);
+            $("#button2", template2).attr("id", v.case_number);
+              $(template).on('click', function() {
+                db3.crime.add({
+                  block: v.block,
+                  cward: v.ward,
+                  type: v.primary_type,
+                  date: v.date
+                });
+              });
 
             var marker = new google.maps.Marker({
               position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
