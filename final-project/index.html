@@ -2,6 +2,8 @@
 <html>
 
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
   <title> </title>
   <style>
     .screen {
@@ -76,6 +78,7 @@
             <a id="crimeSearch" class="btn btn-primary btn-lg" href="#" role="button" disabled>Search</a>
           </div>
         </form>
+        <button id="saveDB"> Save Ward Data to indexDB</button>
     </div>
   </div>
 
@@ -124,10 +127,10 @@
         alert('no geolocation');
       }
     }
-    var db = new Dexie('Business Data');
+    var db = new Dexie('Ward Data');
     // Define a schema
     db.version(1).stores({
-      business: 'name, address, zip, ward'
+      ward: 'businessward, crimeward'
     });
 
 
@@ -135,19 +138,6 @@
     db.open().catch(function(error) {
       alert('Uh oh : ' + error);
     });
-
-    var db2 = new Dexie('Crime Data');
-    // Define a schema
-    db2.version(1).stores({
-      crime: 'address, zip, ward, type'
-    });
-
-
-    // Open the database
-    db2.open().catch(function(error) {
-      alert('Uh oh : ' + error);
-    });
-
 
     $(document).ready(function() {
       $("#busSearch").prop("disabled", false);
@@ -160,13 +150,7 @@
             $("#business-results").append("<br>There are " + length + " results." + "<br><br><br>");
 
             $.each(response, function(i, v) {
-             db.business.add({
-              name: response.legal_name,
-              address: response.address,
-              zip: response.zip_code,
-              ward: response.ward
-            });
-
+             
               var template = $("#template").clone().removeAttr("id").removeClass("hidden");
               $(".mdc-card__title", template).html("<strong>" + v.legal_name + "</strong>" + "<br>");
               $(".mdc-card__subtitle", template).html(v.address + "<br>" + v.zip_code);
@@ -201,12 +185,6 @@
             " crime in this ward in the year 2017." + "<br><br><br>");
 
           $.each(response, function(i, v) {
-            db2.crime.add({
-              address: response.address,
-              zip: response.zip_code,
-              ward: response.ward,
-              type: response.primary_type
-            });
             var template2 = $("#template2").clone().removeAttr("id").removeClass("hidden");
             $(".mdc-card__title", template2).html("<strong>" + v.case_number + "</strong>" + "<br>");
             $(".mdc-card__subtitle", template2).html(v.block + "<br>" + v.primary_type);
@@ -257,7 +235,7 @@
         });
     };
     
-     if('serviceWorker' in navigator) {
+    if('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js', { scope: './' })
           .then(function(registration) {
                 console.log('Service Worker Registered');
@@ -267,6 +245,13 @@
            console.log('Service Worker Ready');
         });
       }
+    
+    $("#saveDB").on('click',function() {
+        db.ward.add({
+          businessward: $("#ward").val(),
+          crimeward: $("#crimeward").val()
+        });
+    });
     
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5uMEVQFAwx-e3h1g6B1_glDKm78SIhhs&callback=getLocation">
