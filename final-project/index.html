@@ -13,6 +13,11 @@
     #template2 {
       display: none;
     }
+    
+    .my-card-container .mdc-card {
+  height: 350px;
+  width: 350px;
+}
   </style>
   <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -55,7 +60,7 @@
           <input type="text" class="form-control" id="ward">
         </div>
 
-        <div class="form-group">
+        <div class="mdc-form-field">
           <label></label>
           <a id="busSearch" class="btn btn-primary btn-lg" href="#" role="button" disabled>Search</a>
         </div>
@@ -66,7 +71,7 @@
             <label>Ward</label>
             <input type="text" class="form-control" id="crimeward">
           </div>
-          <div class="form-group">
+          <div class="mdc-form-field">
             <label></label>
             <a id="crimeSearch" class="btn btn-primary btn-lg" href="#" role="button" disabled>Search</a>
           </div>
@@ -76,28 +81,28 @@
 
   <div class="container screen" id="business-results">Business Results
 
-    <div class="card hidden" id="template">
-      <div class="card-block">
-        <h4 class="card-title">Card title</h4>
-        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      </div>
+    <div class="mdc-card hidden" id="template">
+      <section class="mdc-card__primary">
+        <h4 class="mdc-card__title mdc-card__title--large">Card title</h4>
+        <h6 class="mdc-card__subtitle mb-2 text-muted">Card subtitle</h6>
+        <p class="mdc-card__supporting-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      </section>
     </div>
   </div>
 
   <div class="container screen" id="crime-data">Crime Data
 
-    <div class="card hidden" id="template2">
-      <div class="card-block">
-        <h4 class="card-title">Card title</h4>
-        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <div class="mdc-card hidden" id="template2">
+      <div class="mdc-card__primary">
+        <h4 class="mdc-card__title mdc-card__title--large">Card title</h4>
+        <h6 class="mdc-card__subtitle mb-2 text-muted">Card subtitle</h6>
+        <p class="mdc-card__supporting-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
       </div>
     </div>
   </div>
 
   </div>
-  <div class="container screen" id="map">Blue Markers are Businesses. Red Markers are Crimes.
+  <div class="container screen" id="map">
 
   </div>
 
@@ -163,9 +168,9 @@
             });
 
               var template = $("#template").clone().removeAttr("id").removeClass("hidden");
-              $(".card-title", template).html("<strong>" + v.legal_name + "</strong>" + "<br>");
-              $(".card-subtitle", template).html(v.address + "<br>" + v.zip_code);
-              $(".card-text", template).html("Police District:" + v.police_district + "<br>" + "Police Ward: " + v.ward + "<br>");
+              $(".mdc-card__title", template).html("<strong>" + v.legal_name + "</strong>" + "<br>");
+              $(".mdc-card__subtitle", template).html(v.address + "<br>" + v.zip_code);
+              $(".mdc-card__supporting-text", template).html("Police District:" + v.police_district + "<br>" + "Police Ward: " + v.ward + "<br>");
               $("#business-results").append(template);
             });
           });
@@ -183,6 +188,7 @@
 
     function initMap(lat, lng) {
       var uluru = { lat: lat, lng: lng };
+      $("#map").append("<br> Blue Markers are Businesses. Red Markers are Crimes.");
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
         center: uluru
@@ -202,9 +208,9 @@
               type: response.primary_type
             });
             var template2 = $("#template2").clone().removeAttr("id").removeClass("hidden");
-            $(".card-title", template2).html("<strong>" + v.case_number + "</strong>" + "<br>");
-            $(".card-subtitle", template2).html(v.block + "<br>" + v.primary_type);
-            $(".card-text", template2).html("Police District:" + v.district + "<br>" + "Police Ward: " + v.ward + "<br>");
+            $(".mdc-card__title", template2).html("<strong>" + v.case_number + "</strong>" + "<br>");
+            $(".mdc-card__subtitle", template2).html(v.block + "<br>" + v.primary_type);
+            $(".mdc-card__supporting-text", template2).html("Police District: " + v.district + "<br>" + "Police Ward: " + v.ward + "<br>");
             $("#crime-data").append(template2);
 
             var marker = new google.maps.Marker({
