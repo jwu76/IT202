@@ -6,10 +6,14 @@
   <meta name="viewport" content="width=device-width">
   <title> </title>
   <style>
-  
-   #map{
-      position:absolute; top:0; left:0; width:100%; height:100%;
-   }
+    #map {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
     .screen {
       height: 400px;
       display: none;
@@ -29,11 +33,10 @@
       border-style: solid;
       background-color: lightblue;
     }
-    
+
     .mdc-toolbar-demo {
       margin: 0px;
     }
-
   </style>
   <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel='manifest' href='./manifest.json'>
@@ -62,7 +65,7 @@
       </header>
     </div>
   </nav>
-  
+
   <div class="container screen" id="input_form">
     <br><br>
     <div class="mdc-form-field">
@@ -114,7 +117,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
   <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
   <script src="https://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
-  
+
   <script>
     function getLocation() {
       if ("geolocation" in navigator) {
@@ -202,7 +205,7 @@
               map: map,
               icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
             });
-            
+
             var contentString2 = "<h2>" + v.case_number +
               "</h2><br>" + v.block +
               "<br> Crime: " + v.primary_type +
@@ -229,15 +232,15 @@
               map: map,
               icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
             });
-            
+
             var contentString = "<h2>" + vari.legal_name +
               "</h2><br> Address: " + vari.address +
               "<br> Ward: " + vari.ward;
-              
+
             var infowindow = new google.maps.InfoWindow({
               content: contentString
             });
-            
+
             marker.addListener('click', function() {
               infowindow.open(map, marker);
             });
@@ -263,12 +266,12 @@
       });
     });
   </script>
-  
+
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5uMEVQFAwx-e3h1g6B1_glDKm78SIhhs&callback=getLocation">
   </script>
-  
+
   <script src="https://material-components-web.appspot.com/assets/material-components-web.js"></script>
-  
+
   <script type="text/javascript">
     (function() {
       var pollId = 0;
