@@ -20,7 +20,7 @@
 }
   </style>
   <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <link rel='manifest' href='./manifest.json'>
   <!-- Custom styles for this template -->
   <link href="https://v4-alpha.getbootstrap.com/examples/jumbotron/jumbotron.css" rel="stylesheet">
   <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
@@ -216,7 +216,7 @@
             var marker = new google.maps.Marker({
               position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
               map: map,
-              icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+              icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
             });
             var contentString2 = "<h2>" + v.case_number +
               "</h2><br>" + v.block +
@@ -242,7 +242,7 @@
             var marker = new google.maps.Marker({
               position: { lat: parseFloat(vari.latitude), lng: parseFloat(vari.longitude) },
               map: map,
-              icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+              icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
             });
             var contentString = "<h2>" + vari.legal_name +
               "</h2><br> Address: " + vari.address +
@@ -255,7 +255,19 @@
             });
           });
         });
-    }
+    };
+    
+     if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js', { scope: './' })
+          .then(function(registration) {
+                console.log('Service Worker Registered');
+          });
+
+        navigator.serviceWorker.ready.then(function(registration) {
+           console.log('Service Worker Ready');
+        });
+      }
+    
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5uMEVQFAwx-e3h1g6B1_glDKm78SIhhs&callback=getLocation">
   </script>
