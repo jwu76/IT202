@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width">
   <title> </title>
   <style>
+  
+   #map{
+      position:absolute; top:0; left:0; width:100%; height:100%;
+   }
     .screen {
       height: 400px;
       display: none;
@@ -15,80 +19,74 @@
     #template2 {
       display: none;
     }
+
+    .mdc-card {
+      flex: 0 50%;
+      height: 250px;
+      margin: 24px;
+      align-content: center;
+      justify-content: left;
+      border-style: solid;
+      background-color: lightblue;
+    }
     
-    .my-card-container .mdc-card {
-  height: 350px;
-  width: 350px;
-}
+    .mdc-toolbar-demo {
+      margin: 0px;
+    }
+
   </style>
   <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel='manifest' href='./manifest.json'>
-  <!-- Custom styles for this template -->
   <link href="https://v4-alpha.getbootstrap.com/examples/jumbotron/jumbotron.css" rel="stylesheet">
   <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+  <script src="https://material-components-web.appspot.com/assets/toolbar/toolbar.css.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 </head>
 
 <body>
-  <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    <a class="navbar-brand" href="#">Navbar</a>
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#input_form">Input Form<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#business-results">Results FOR BUSINESSES</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#crime-data">RESULTS FOR CRIME</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#map">MAPPING RESULTS</a>
-        </li>
-      </ul>
+  <nav>
+    <div class="mdc-typography mdc-toolbar-demo">
+      <header class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--waterfall">
+        <div class="mdc-toolbar__row nav wrapper">
+          <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+            <!--<a href="#" class="material-icons mdc-toolbar__menu-icon">menu</a>-->
+            <li class="nav-item"><a class="nav-link" href="#input_form" class="mdc-toolbar__title">INPUT FORM</a></li>
+            <li class="nav-item"><a class="nav-link" href="#business-results" class="mdc-toolbar__title" aria-label="BUSINESSES" alt="Crime">Business Results</a></li>
+            <li class="nav-item"><a class="nav-link" href="#crime-data" class="mdc-toolbar__title" aria-label="Crime" alt="Crime">Crime Results</a></li>
+            <li class="nav-item"><a class="nav-link" href="#map" class="mdc-toolbar__title" aria-label="Map" alt="Map">Map</a></li>
+          </section>
+        </div>
+      </header>
     </div>
   </nav>
-
-
-  <div class="jumbotron">
-    <div class="container screen" id="input_form">
+  
+  <div class="container screen" id="input_form">
+    <br><br>
+    <div class="mdc-form-field">
       <h1 class="display-3">Business Search By Ward</h1>
-      <form action="/action_page.php">
-        <div>
-          <label>Ward</label>
-          <input type="text" class="form-control" id="ward">
-        </div>
+      <label>Ward</label>
+      <input type="text" class="form-control" id="ward">
+      <label></label>
+      <a id="busSearch" class="btn btn-primary btn-lg" href="#" role="button" disabled>Search</a>
+    </div>
 
-        <div class="mdc-form-field">
-          <label></label>
-          <a id="busSearch" class="btn btn-primary btn-lg" href="#" role="button" disabled>Search</a>
-        </div>
-
-        <h1 class="display-3">Crime Search By Ward (2017 YEAR)</h1>
-        <form action="/action_page.php">
-          <div>
-            <label>Ward</label>
-            <input type="text" class="form-control" id="crimeward">
-          </div>
-          <div class="mdc-form-field">
-            <label></label>
-            <a id="crimeSearch" class="btn btn-primary btn-lg" href="#" role="button" disabled>Search</a>
-          </div>
-          <div class="mdc-form-field">
-            <label></label>
-            <br><br>
-          <button id="saveDB" class="btn btn-primary btn-lg"> Save Ward Data to indexDB</button>
-          </div>
-        </form>
+    <div class="mdc-form-field">
+      <h1 class="display-3">Crime Search By Ward (2017 YEAR)</h1>
+      <label>Ward</label>
+      <input type="text" class="form-control" id="crimeward">
+      <label></label>
+      <button id="crimeSearch" class="btn btn-primary btn-lg" href="#" disabled>Search</button>
+      <br><br>
+      <button id="saveDB" class="btn btn-primary btn-lg" href="#"> Save Ward Data to indexDB</button>
     </div>
   </div>
 
-  <div class="container screen" id="business-results">Business Results
-
-    <div class="mdc-card hidden" id="template">
+  <div class=" container screen" id="business-results">Business Results
+    <br><br>
+    <div class="mdc-card mdc-card--theme-dark hidden" id="template">
       <section class="mdc-card__primary">
         <h4 class="mdc-card__title mdc-card__title--large">Card title</h4>
         <h6 class="mdc-card__subtitle mb-2 text-muted">Card subtitle</h6>
@@ -97,29 +95,26 @@
     </div>
   </div>
 
-  <div class="container screen" id="crime-data">Crime Data
+  <div class="containter screen" id="crime-data">Crime Data
 
-    <div class="mdc-card hidden" id="template2">
-      <div class="mdc-card__primary">
+    <div class="mdc-card mdc-card--theme-dark hidden" id="template2">
+      <section class="mdc-card__primary">
         <h4 class="mdc-card__title mdc-card__title--large">Card title</h4>
         <h6 class="mdc-card__subtitle mb-2 text-muted">Card subtitle</h6>
         <p class="mdc-card__supporting-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      </div>
+      </section>
     </div>
   </div>
 
-  </div>
   <div class="container screen" id="map">
-
   </div>
-
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
   <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
-  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="https://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+  
   <script>
     function getLocation() {
       if ("geolocation" in navigator) {
@@ -137,7 +132,6 @@
       ward: 'businessward, crimeward'
     });
 
-
     // Open the database
     db.open().catch(function(error) {
       alert('Uh oh : ' + error);
@@ -151,11 +145,11 @@
           function(response) {
             var length = response.length;
 
-            $("#business-results").append("<br>There are " + length + " results." + "<br><br><br>");
+            $("#business-results").append("<br><br><br><br>There are " + length + " results." + "<br><br><br>");
 
             $.each(response, function(i, v) {
-             
-              var template = $("#template").clone().removeAttr("id").removeClass("hidden");
+
+              var template = $("#template").clone().attr("id", v.legal_name).removeClass("hidden");
               $(".mdc-card__title", template).html("<strong>" + v.legal_name + "</strong>" + "<br>");
               $(".mdc-card__subtitle", template).html(v.address + "<br>" + v.zip_code);
               $(".mdc-card__supporting-text", template).html("Police District:" + v.police_district + "<br>" + "Police Ward: " + v.ward + "<br>");
@@ -170,6 +164,7 @@
         $(".screen").hide();
         var target = $(this).attr("href");
         $(target).show();
+        google.maps.event.trigger(map, 'resize');
       });
     });
 
@@ -181,15 +176,22 @@
         zoom: 13,
         center: uluru
       });
+
+      $(window).on('resize', function() {
+        var currCenter = map.getCenter();
+        google.maps.event.trigger(map, 'resize');
+        map.setCenter(currCenter);
+      });
+
       $.get("https://data.cityofchicago.org/resource/6zsd-86xi.json?year=2017&&ward=" + $("#crimeward").val(),
         function(response) {
           var length2 = response.length;
 
-          $("#crime-data").append("<br>There are " + length2 +
+          $("#crime-data").append("<br><br><br><br>There are " + length2 +
             " crime in this ward in the year 2017." + "<br><br><br>");
 
           $.each(response, function(i, v) {
-            var template2 = $("#template2").clone().removeAttr("id").removeClass("hidden");
+            var template2 = $("#template2").clone().attr("id", v.case_number).removeClass("hidden");
             $(".mdc-card__title", template2).html("<strong>" + v.case_number + "</strong>" + "<br>");
             $(".mdc-card__subtitle", template2).html(v.block + "<br>" + v.primary_type);
             $(".mdc-card__supporting-text", template2).html("Police District: " + v.district + "<br>" + "Police Ward: " + v.ward + "<br>");
@@ -200,6 +202,7 @@
               map: map,
               icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
             });
+            
             var contentString2 = "<h2>" + v.case_number +
               "</h2><br>" + v.block +
               "<br> Crime: " + v.primary_type +
@@ -226,39 +229,62 @@
               map: map,
               icon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
             });
+            
             var contentString = "<h2>" + vari.legal_name +
               "</h2><br> Address: " + vari.address +
               "<br> Ward: " + vari.ward;
+              
             var infowindow = new google.maps.InfoWindow({
               content: contentString
             });
+            
             marker.addListener('click', function() {
               infowindow.open(map, marker);
             });
           });
         });
     };
-    
-    if('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js', { scope: './' })
-          .then(function(registration) {
-                console.log('Service Worker Registered');
-          });
 
-        navigator.serviceWorker.ready.then(function(registration) {
-           console.log('Service Worker Ready');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js', { scope: './' })
+        .then(function(registration) {
+          console.log('Service Worker Registered');
         });
-      }
-    
-    $("#saveDB").on('click',function() {
-        db.ward.add({
-          businessward: $("#ward").val(),
-          crimeward: $("#crimeward").val()
-        });
+
+      navigator.serviceWorker.ready.then(function(registration) {
+        console.log('Service Worker Ready');
+      });
+    }
+
+    $("#saveDB").on('click', function() {
+      db.ward.add({
+        businessward: $("#ward").val(),
+        crimeward: $("#crimeward").val()
+      });
     });
-    
   </script>
+  
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5uMEVQFAwx-e3h1g6B1_glDKm78SIhhs&callback=getLocation">
+  </script>
+  
+  <script src="https://material-components-web.appspot.com/assets/material-components-web.js"></script>
+  
+  <script type="text/javascript">
+    (function() {
+      var pollId = 0;
+      pollId = setInterval(function() {
+        var pos = getComputedStyle(document.querySelector('.mdc-toolbar')).position;
+        if (pos === 'fixed' || pos === 'relative') {
+          init();
+          clearInterval(pollId);
+        }
+      }, 250);
+
+      function init() {
+        var toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
+        toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
+      }
+    })();
   </script>
 </body>
 
