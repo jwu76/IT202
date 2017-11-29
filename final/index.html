@@ -223,13 +223,13 @@
             $(".mdc-card__supporting-text", template2).html("Police District: " + v.district + "<br>" + "Police Ward: " + v.ward + "<br>");
             $("#crime-data").append(template2);
             $("#button2", template2).attr("id", v.case_number);
-              $(template2).on('click', function() {
-                db3.crime.add({
-                  block: v.block,
-                  type: v.primary_type,
-                  date: v.date
-                });
+            $(template2).on('click', function() {
+              db3.crime.add({
+                block: v.block,
+                type: v.primary_type,
+                date: v.date
               });
+            });
 
             var marker = new google.maps.Marker({
               position: { lat: parseFloat(v.latitude), lng: parseFloat(v.longitude) },
