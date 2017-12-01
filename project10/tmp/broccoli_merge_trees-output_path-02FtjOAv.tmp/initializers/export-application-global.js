@@ -1,0 +1,1 @@
+/home/ubuntu/workspace/ember-quickstart/tmp/broccoli_merge_trees-input_base_path-SzvHsNIO.tmp/3/initializers/export-application-global.js

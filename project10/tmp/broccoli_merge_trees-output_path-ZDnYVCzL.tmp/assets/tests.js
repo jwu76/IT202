@@ -1,0 +1,1 @@
+/home/ubuntu/workspace/ember-quickstart/tmp/broccoli_merge_trees-input_base_path-VN3uGH3S.tmp/0/assets/tests.js

@@ -1,0 +1,1 @@
+/home/ubuntu/workspace/ember-quickstart/tmp/broccoli_merge_trees-input_base_path-yhc0wvHf.tmp/0/helpers/singularize.js

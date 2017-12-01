@@ -1,0 +1,1 @@
+/home/ubuntu/workspace/ember-quickstart/tmp/funnel-input_base_path-WKwOGMGU.tmp/app-suffix.js

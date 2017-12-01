@@ -1,0 +1,1 @@
+/home/ubuntu/workspace/ember-quickstart/node_modules/ember-data/addon/adapter.js

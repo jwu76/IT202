@@ -1,0 +1,1 @@
+/home/ubuntu/workspace/ember-quickstart/tmp/broccoli_merge_trees-input_base_path-w5aO2vj7.tmp/0/ember-cli-shims/app-shims.js

@@ -1,0 +1,1 @@
+/home/ubuntu/workspace/ember-quickstart/tmp/broccoli_merge_trees-input_base_path-dBF5koKp.tmp/2/ember-quickstart/tests/app.lint-test.js
