@@ -1,1 +1,0 @@
-/home/ubuntu/workspace/ember-quickstart/app/router.js

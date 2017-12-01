@@ -1,1 +1,0 @@
-/home/ubuntu/workspace/project10/tmp/funnel-input_base_path-scEaqEW9.tmp/instance-initializers/initialize-store-service.js

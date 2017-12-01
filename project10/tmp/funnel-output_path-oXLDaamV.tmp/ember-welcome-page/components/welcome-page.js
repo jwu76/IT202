@@ -1,1 +1,0 @@
-/home/ubuntu/workspace/ember-quickstart/tmp/funnel-input_base_path-6aXK1cxA.tmp/components/welcome-page.js

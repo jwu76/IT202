@@ -1,1 +1,0 @@
-/home/ubuntu/workspace/ember-quickstart/tmp/funnel-input_base_path-Uzhlprmu.tmp/lib/system/inflector.js

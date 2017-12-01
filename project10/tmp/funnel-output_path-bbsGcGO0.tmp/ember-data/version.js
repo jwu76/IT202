@@ -1,1 +1,0 @@
-/home/ubuntu/workspace/project10/tmp/creator-output_path-MCxvxuXE.tmp/version.js
