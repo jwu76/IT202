@@ -1,0 +1,1 @@
+/home/ubuntu/workspace/project10/tmp/broccoli_merge_trees-input_base_path-wY8TaRt3.tmp/4/initializers/container-debug-adapter.js
