@@ -25,9 +25,9 @@
                 
                 $("#speech").on('click', function(){
                     var msg = new SpeechSynthesisUtterance($("#input").val());
-                    
                     msg.lang = 'ja-JP';
                     window.speechSynthesis.speak(msg);
+                    console.log("successful");
                 });
                 
             });
