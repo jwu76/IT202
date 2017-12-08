@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title> </title>
-        
-        
-    </head>
-    <body>
-        <textarea id="input" placeholder="Enter text to translate"></textarea>
-        <button id="btn">Translate</button>
-        <button id="speech">Say Text</button>
-        <div id ="results"></div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        
-        <script>
-            var baseUrl = "https://translation.googleapis.com/language/translate/v2?&target=ja&format=text&source=en&key=AIzaSyDFE9BAasevH_Kg_JXbC-G2TI2yFkAlw9I&q=";
-            
-            $(function(){
-                $("#btn").on('click',function(){
-                    $.get(baseUrl + $("#input").val(), function(response)
-                    {
-                        console.log(response.data.translations[0].translatedText);
-                    });
+
+<head>
+    <title> </title>
+
+
+</head>
+
+<body>
+    <textarea id="input" placeholder="Enter text to translate"></textarea>
+    <button id="btn">Translate</button>
+    <button id="speech">Say Text</button>
+    <div id="results"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+        var baseUrl = "https://translation.googleapis.com/language/translate/v2?&target=ja&format=text&source=en&key=AIzaSyDFE9BAasevH_Kg_JXbC-G2TI2yFkAlw9I&q=";
+
+        $(function() {
+            $("#btn").on('click', function() {
+                $.get(baseUrl + $("#input").val(), function(response) {
+                    console.log(response.data.translations[0].translatedText);
                 });
-                
-                $("#speech").on('click', function(){
-                    var msg = new SpeechSynthesisUtterance($("#input").val());
-                    msg.lang = 'ja-JP';
-                    window.speechSynthesis.speak(msg);
-                    console.log("successful");
-                });
-                
             });
-            
-            
-            
-        </script>
-        
-        
-    </body>
+
+            $("#speech").on('click', function() {
+                var msg = new SpeechSynthesisUtterance($("#input").val());
+                msg.lang = 'ja-JP';
+                window.speechSynthesis.speak(msg);
+                console.log("successful");
+            });
+        });
+    </script>
+
+
+</body>
+
 </html>
