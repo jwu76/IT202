@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <!--<p><button onclick = "getLocation()">Show My Location</button></p>-->
+    <script>
+      
+      function getLocation() {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+              initMap(position.coords.latitude, position.coords.longitude);
+            });
+        } else {
+          alert('no geolocation');
+        }
+      }
+    
+      function initMap(lat, lng) {
+        var uluru = {lat: lat, lng: lng};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: uluru
+        });
+        
+        map.addListener('click', function(e) {
+          placeMarkerAndPanTo(e.latLng, map);
+        });
+      }
+
+      function placeMarkerAndPanTo(latLng, map) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map
+        });
+        map.panTo(latLng);
+      }
+
+      
+    </script>
+    <script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5uMEVQFAwx-e3h1g6B1_glDKm78SIhhs&callback=getLocation">
+    </script>
+  </body>
+</html>
