@@ -24,8 +24,8 @@
                 });
                 
                 $("#speech").on('click', function(){
-                    var msg = new SpeechSynthesisUtterance($("#input").val());
-                    msg.lang = "ja";
+                    var msg = new SpeechSynthesisUtterance('hi');
+                    //msg.lang = "en-US";
                     window.speechSynthesis.speak(msg);
                 });
                 
